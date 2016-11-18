@@ -93,6 +93,7 @@ namespace Programmeren2Opdrachten
 
         //Sum all the elements in an array up to but not including the first even number. 
         //(Write your unit tests. What about the case when there is no even number?)
+
         [Test]
         public void TestExercise5()
         {
@@ -185,6 +186,7 @@ namespace Programmeren2Opdrachten
         public void TestExercise7()
         {
             sqrt(25);
+            
         }
 
         public static double sqrt(double n)
@@ -198,8 +200,14 @@ namespace Programmeren2Opdrachten
                     return better;
                 }
                 approx = better;
-                System.Diagnostics.Debug.WriteLine(better);
+                System.Diagnostics.Debug.WriteLine("better: " + better);
             }
+            //Results: 
+            //better: 7.25
+            //better: 5.34913793103448
+            //better: 5.01139410653255
+            //better: 5.00001295304868
+
         }
 
         //Trace the execution of the last version of generateTable and make yourself more 
@@ -222,6 +230,9 @@ namespace Programmeren2Opdrachten
             }
         }
 
+
+
+
         //Write a method that prints the n-th triangular numbers. 
         //A call to triangular_numbers(5) would produce the following output: 15
         //https://en.wikipedia.org/wiki/Triangular_number
@@ -233,13 +244,22 @@ namespace Programmeren2Opdrachten
 
         public static int Exercise9(int n)
         {
-            throw new NotImplementedException();
+           
+            int solution = n * (n + 1) / 2;
+            return solution;
         }
 
 
+
+
         //What happens if we call our Collatz sequence generator with a negative integer?
+        //answ: Infinite loop
+
         //What happens if we call it with zero?
+        //answ: Infinite loop
+
         //Change the method so that it outputs an error message in either of these cases, and doesn’t get into an infinite loop.
+        [Test]
         public static void TestExercise10()
         {
             //Collatz(-10);
@@ -251,6 +271,12 @@ namespace Programmeren2Opdrachten
             while (n != 1)
             {
                 Console.Write("{0}, ", n);
+                if ((n < 0 )|| (n == 0))
+                {
+                    Console.WriteLine("Please enter valid number..");
+                    break;
+                }
+
                 if (n % 2 == 0)        // n is even
                 {
                     n /= 2;
@@ -260,46 +286,82 @@ namespace Programmeren2Opdrachten
                     n = n * 3 + 1;
                 }
             }
-            Console.WriteLine("{0}. Yes, it got to 1!", n);
+            if (n == 1)
+            {
+                Console.WriteLine("{0}. Yes, it got to 1!", n);
+            }
         }
+
+
 
         //Write a method, isPrime, which takes a single integer argument and returns true 
         //when the argument is a prime number and false otherwise. 
         //Add tests for cases like this:
         //The last cases could represent your birth date. 
+
         //Were you born on a prime day? In a class of 100 students, how many do you think would have prime birth dates?
+        //Nee ik niet, Ongeveer 20 studenten denk ik.
+
+
         [Test]
         public void TestExercise11()
         {
-            Programmeren2Tests.Chapter11Test.TestExercise11(Exercise11);
+            Programmeren2Tests.Chapter11Test.TestExercise11(isPrime);
+            //isPrime(4);
+            //isPrime(5);
+            //isPrime(110897); 
         }
 
-        public static bool Exercise11(int n)
+        public static bool isPrime(int n)
         {
-            throw new NotImplementedException();
+            if (n <= 1) return false;
+            if (n == 2) return true;
+            if (n % 2 == 0) return false;      
+
+            for (int i = 3; i < n; i += 2)
+            {
+                if (n % i == 0) return false;
+            }
+
+            return true;
         }
+
+
+
+
 
         //What will num_digits(0) return? Modify it to return 1 for this case. 
         //Does a call to num_digits(-12345) work? 
         //Trace through the execution and see what happens if you start with a negative number. 
         //Modify num_digits so that it works correctly with any integer value. 
+
+
         //Add these tests:
         [Test]
         public void TestExercise15()
         {
-            //num_digits(-12345)
+            num_digits(-12345); // = 5
+            num_digits(0);      // = 1
         }
 
         public static int num_digits(int n)
         {
-            int count = 0;
-            while (n != 0)
+            if (n == 0)
             {
-                count++;
-                n /= 10;
+                return 1;
             }
-            return count;
+            else
+            {
+                int count = 0;
+                while (n != 0)
+                {
+                    count++;
+                    n /= 10;
+                }
+                return count;
+            }
         }
+
 
         [Test]
         //Without making use of strings, write a method numEvenDigits(n) that counts 
@@ -322,7 +384,24 @@ namespace Programmeren2Opdrachten
 
         public static int NumEvenDigits(int n)
         {
-            throw new ArgumentException();
+            if (n == 0) //uitzonderding
+            {
+                return 1;
+            }
+            else
+            {
+                int count = 0;
+                while (n != 0)
+                {
+                    if (n % 2 == 0)
+                    {
+                        count++;
+                    }
+                    n /= 10; //decimaal eraf
+                }
+                return count;
+            }
+
         }
 
         //Write a method sum_of_squares(xs) that computes the sum of the squares of the numbers in the array xs. For example, 
@@ -330,12 +409,18 @@ namespace Programmeren2Opdrachten
         [Test]
         public void TestExercise17()
         {
-            Programmeren2Tests.Chapter11Test.TestExercise17(Exercise17);
+            Programmeren2Tests.Chapter11Test.TestExercise17(sum_of_squiares);
         }
 
-        public static double Exercise17(double[] xs)
+        public static double sum_of_squiares(double[] xs)
         {
-            throw new NotImplementedException();
+            double sum = 0;
+            for (int i = 0; i < xs.Length; i++)
+            {
+                sum += xs[i] * xs[i];
+            }
+
+            return sum;
         }
     }
 }
