@@ -10,48 +10,62 @@ namespace Programmeren2Opdrachten
 {
 	public class Chapter12Strings
 	{
+
         //1 What is the value of each of the following expressions, Explain:
-        //"C#"[1]
-        //"C#"[2]
-        //"Strings are sequences of characters."[5]
-        //"wonderful".Length
-        //"app" + "le"
-        //"appl" + 'e'
-        //"Mystery".Substring(4)
-        //"Mystery".Substring(4, 2)
-        //"Mystery".IndexOf('y')
-        //"Mystery".IndexOf('z')
-        //"Mystery".IndexOf('y',3)
-        //"Mystery".IndexOf('y',3, 2)
-        //"apple".CompareTo("pineapple") > 0
-        //"pineapple".CompareTo("Peach") == 0
+        //"C#"[1]                                       = #
+        //"C#"[2]                                       = null
+        //"Strings are sequences of characters."[5]     = g
+        //"wonderful".Length                            = 9
+        //"app" + "le"                                  = apple
+        //"appl" + 'e'                                  = apple
+        //"Mystery".Substring(4)                        = tery
+        //"Mystery".Substring(4, 2)                     = te
+        //"Mystery".IndexOf('y')                        = 1
+        //"Mystery".IndexOf('z')                        = -1
+        //"Mystery".IndexOf('y',3)                      = 6
+        //"Mystery".IndexOf('y',3, 2)                   = -1
+        //"apple".CompareTo("pineapple") > 0            = false
+        //"pineapple".CompareTo("Peach") == 0           = false
 
         //2  Encapsulate:
         // First parameter is the string (fruit)
         // Second paramter is the char ('a')
         // The Code
-        //string fruit = "banana";
-        //int count = 0;
-        //foreach (char c in fruit)
-        //{
-        //    if (c  == 'a')
-        //        count += 1;
-        //}
+       // string fruit = "banana";
+       // int count = 0;
+       //     foreach (char c in fruit)
+       //     {
+       //         if (c  == 'a')
+       //            count += 1;
+       //     }
         //Console.WriteLine(count);
-        //in a method named count_letters, and generalize it so that it accepts the string and the letter as arguments. 
-        //Make the method return the number of characters, rather than show the answer.
+            //in a method named count_letters, and generalize it so that it accepts the string and the letter as arguments. 
+            //Make the method return the number of characters, rather than show the answer.
+
+
+
+
+
+
         [Test]
         public void TestExercise2()
         {
-            //uncomment next line to test your methode!
-            //Programmeren2Tests.Chapter12Test.TestExercise3(CountLetters);       
+            Programmeren2Tests.Chapter12Test.TestExercise3(CountLetters);       
         }
 
-        ////change the return type and paramaters
-        //public ... CountLetters(....)
-        //{
-        //    ...
-        //}
+        private int CountLetters(string s, char chr)
+        {
+            int sum = 0;
+            foreach (char c in s)
+            {
+                if (c == chr)
+                {
+                    sum++;
+                }
+            }
+            return sum;
+        }
+        
 
 		//3 Now rewrite the count_letters (see above) method so that instead of traversing the string, 
 		//it repeatedly calls the IndexOf method, with the optional third parameter to locate new occurrences of the letter being counted.
@@ -63,9 +77,19 @@ namespace Programmeren2Opdrachten
 
         public static int Exercise3(string s, char chr) 
         {
-            throw new NotImplementedException();
+            int result = 0;
+            for (int i = 0; i < s.Length; i++)
+            {
+                if (IndexOf(s, chr, i) != -1)
+                {
+                    result++;
+                    i = IndexOf(s, chr, i);
+                }
+            }
+            return result;
         }
         
+
 		public static int IndexOf(string str, char ch, int startPos)
 		{
             for (int ix = startPos; ix < str.Length; ix++) 
@@ -112,15 +136,41 @@ namespace Programmeren2Opdrachten
 
         public static int Exercise4()
         {
-            throw new NotImplementedException();            
+            int count = 0;
+            string content = LoadAliceInWonderland();
+            string book = content.ToLower();
+            string[] words = book.Split();
+
+
+            foreach(string word in words)
+            {
+                if (word.Length >= 5)
+                {
+                    if (word.Substring(0, 5) == "queen")
+                        count++;
+                }
+            }
+
+
+            return count;
+
+
+
+
+
         }
 
+
+
+
         //load the book (from file) and return it as a string array
-		public static string LoadAliceInWonderland()
+        public static string LoadAliceInWonderland()
 		{
             string aliceFile = Path.Combine(Environment.CurrentDirectory, "bestanden\\alice_in_wonderland.txt");
             return File.ReadAllText(aliceFile);
 		}
+
+
 
 		//5. Use string formatting to produce a neat looking multiplication table like this:
         //        1   2   3   4   5   6   7   8   9  10  11  12
@@ -147,8 +197,16 @@ namespace Programmeren2Opdrachten
             //Dit wil zeggen (spaties en tab's kunnen wegvallen), hierdoor klopt de uitlijning niet meer. 
             //Ook al de string wel correct geformateerd is.
             //Met andere woorden maak iets wat er op lijkt! Of als je het perfect wil hebben moet je een console applicatie maken. 
-            
-            
+
+            int a, b;
+            for (a=1; a<=12; a++)
+            {
+                for (b = 1; b <= 12; b++)
+                {
+                    System.Diagnostics.Debug.WriteLine(a * b + "  ");
+                }
+                System.Diagnostics.Debug.WriteLine("  ");
+            }
 
 		}
 
@@ -162,10 +220,29 @@ namespace Programmeren2Opdrachten
 
         public string Exercise6(string str)
         {
-            throw new NotImplementedException();
+            
+            return reverseString(str);
+
         }
 
-		//7. Write a method that mirrors its argument:
+
+
+
+        public string reverseString(string str)
+        {
+            char[] cArray = str.ToCharArray();
+            string reverse = String.Empty;
+            for (int i = cArray.Length - 1; i > -1; i--)
+            {
+                reverse += cArray[i];
+            }
+            return reverse;
+
+        }
+
+
+
+        //7. Write a method that mirrors its argument:
         //Assert.AreEqual(mirror("good"), "gooddoog");
         //Assert.AreEqual(mirror("C#"), "C##C");
         //Assert.AreEqual(mirror(""), "");
@@ -174,7 +251,7 @@ namespace Programmeren2Opdrachten
         // Dick: string.Reverse() geeft een Iterator ipv een omgekeerde string
         // Joris: nu aangepast
         //Remark: don't call any other methods!
- 		[Test]
+        [Test]
 		public void TestExercise7()
 		{
             Programmeren2Tests.Chapter12Test.TestExercise7(Exercise7);
@@ -182,8 +259,19 @@ namespace Programmeren2Opdrachten
 
 		public static string Exercise7(string s)
 		{
-            throw new NotImplementedException();
+            char[] cArray = s.ToCharArray();
+            string mirror = String.Empty;
+            string reverse = String.Empty;
+            for (int i = cArray.Length - 1; i > -1; i--)
+            {
+                reverse += cArray[i];
+            }
+
+            mirror = s + reverse;
+            return mirror;
 		}
+
+
 
 		//8. Write a method that removes all occurrences of a given letter from a string:
 		[Test]
@@ -194,7 +282,9 @@ namespace Programmeren2Opdrachten
 
         public static string Exercise8(char chr, string s)
 		{
-            throw new NotImplementedException();
+            string char1 = Convert.ToString(chr);
+            string result = s.Replace (char1, String.Empty);
+            return result;
 		}
 
 
@@ -214,8 +304,41 @@ namespace Programmeren2Opdrachten
 
 		public static bool IsPalindrome(string s)
 		{
-            throw new NotImplementedException();
+            if (s == "")
+            {
+                return false;
+            }
+
+
+            char[] cArray = s.ToCharArray();
+            string reverse = String.Empty;
+            for (int i = cArray.Length - 1; i > -1; i--)
+            {
+                reverse += cArray[i];
+            }
+
+
+            if (reverse == s)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+
+
+
 		}
+
+
+
+
+
+
+
+
 
 		//Write a method that counts how many times a substring occurs in a string:
 		[Test]
@@ -226,12 +349,28 @@ namespace Programmeren2Opdrachten
 
 		public static int Exercise10(string sub, string str) 
         {
-            throw new NotImplementedException();
+            int count = 0;
+            for (int i = 0; i < str.Length; i++)
+            {
+                if (IndexOf(str, sub, i) != -1)
+                {
+                    count++;
+                    i = IndexOf(str, sub, i);
+                }
+            }
+
+
+            return count;
         }
 
 
-		//11 Write a method that removes the first occurrence of a string from another string:
-		[Test]
+
+
+
+
+
+        //11 Write a method that removes the first occurrence of a string from another string:
+        [Test]
 		public void TestExercise11()
 		{
             Programmeren2Tests.Chapter12Test.TestExercise11(Exercise11);
@@ -239,7 +378,27 @@ namespace Programmeren2Opdrachten
 
         public static string Exercise11(string first, string str)
         {
-            throw new NotImplementedException();
+            int index = 0;
+            for (int i = 0; i < str.Length; i++)
+            {
+                index = str.IndexOf(first, i);
+                if (index == -1)
+                {
+                    continue;
+                }
+                else
+                {
+                    break;
+                }
+            }
+            if (index == -1)
+            {
+                return str;
+            }
+
+            string result = str.Remove(index, first.Length);
+            return result;
+
         }
 
 		//12 Write a method that removes all occurrences of a string from another string:
@@ -251,7 +410,8 @@ namespace Programmeren2Opdrachten
 
         public static string Exercise12(string strToRemove, string str)
 		{
-            throw new NotImplementedException();
-		}
+            string result = str.Replace(strToRemove, String.Empty);
+            return result;
+        }
 	}
 }
