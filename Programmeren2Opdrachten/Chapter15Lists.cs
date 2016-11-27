@@ -14,6 +14,9 @@ namespace Programmeren2Opdrachten
         //    ys.Add(42);
         //Does this create one or two list instances? Would would the value of xs.Count be after executing this code?
 
+        // het maakt 1 lijst aan, beide hebben ze nu een waarde van 42 in de lijst.
+
+
 
         //2. What will be the output of the following program?
         //string[] us = { "I", "am", "not", "a", "crook" };
@@ -22,7 +25,12 @@ namespace Programmeren2Opdrachten
         //us = vs;
         //Console.WriteLine("Test 2: {0}", us == vs);
         //Provide a detailed explanation of the results.
-        
+
+        // false, 2 verschillende lijsten aangemaakt
+        //true, de 2 lijsten zijn nu gelijk gemaakt. er is nog maar 1 lijst nu.
+
+
+
         //3a Write a deep equality test for two arrays of string so that these unit tests pass:
         [Test]
         public void TestExercise3a()
@@ -39,7 +47,17 @@ namespace Programmeren2Opdrachten
 
         public static bool Exercise3a(string[] xs, string[] ys)
         {
-            throw new NotImplementedException();
+            int maxLenght = xs.Length;
+            if (ys.Length > xs.Length) maxLenght = ys.Length;
+
+            for (int i = 0; i < maxLenght; i++)
+            {
+                if (xs[i] != ys[i])
+                {
+                    return false;
+                }
+            }
+            return true;
         }
 
         //3b Now do the same for a deep equality test for List<string>.
@@ -58,7 +76,28 @@ namespace Programmeren2Opdrachten
 
         public static bool Exercise3b(List<string> xs, List<string> ys)
         {
-            throw new NotImplementedException();
+
+            int i = 0;
+            foreach (string item in xs)
+            {
+                if (xs[i] != ys[i])
+                {
+                    return false;
+                }
+                i++;
+            }
+            i = 0;
+            foreach (string item in ys)
+            {
+                if (xs[i] != ys[i])
+                {
+                    return false;
+                }
+                i++;
+            }
+
+
+            return true;
         }
 
         //4a Write two methods that remove all the odd numbers from a list. 
@@ -82,12 +121,32 @@ namespace Programmeren2Opdrachten
 
         public static List<int> RemoveOdds1(List<int> xs)
         {
-            throw new NotImplementedException();
+            List<int> nieuw = new List<int>();
+
+            foreach (int num in xs)
+            {
+                if (num % 2 == 0)
+                {
+                    nieuw.Add(num);
+                }
+            }
+
+            return nieuw;
         }
+
+
+
 
         public static void RemoveOdds2(List<int> xs)
         {
-            throw new NotImplementedException();
+            for (int i = 0; i < xs.Count; i++)
+            {
+                if (xs[i] % 2 != 0)
+                {
+                    xs.RemoveAt(i);
+                    i--;
+                }
+            }
         }
 
         //5 Write a method moveToBack(xs, p). 
@@ -99,6 +158,8 @@ namespace Programmeren2Opdrachten
             List<int> xs = new List<int>() { 30, 50, 40, 70, 20 };
             MoveToBack(xs, 2);         // move element at position 2 to the back
             Assert.AreEqual(new List<int>() { 30, 50, 70, 20, 40 }, xs);
+
+
             MoveToBack(xs, 0);
             MoveToBack(xs, -1);
             MoveToBack(xs, 4);
@@ -109,7 +170,12 @@ namespace Programmeren2Opdrachten
 
         public static void MoveToBack(List<int> xs, int p)
         {
-            throw new NotImplementedException();    
+            if (xs.Count <= p || p < 0) return;
+            xs.Add(xs[p]);
+            xs.RemoveAt(p);
+
+
+
         }
 
         //6 Re-do the above exercise, this time with fixed-size arrays. 
@@ -131,7 +197,15 @@ namespace Programmeren2Opdrachten
 
         public static void MoveToBack(int[] xs, int p)
         {
-            throw new NotImplementedException();
+            if ((p < 0) || (p > (xs.Length-1))) return;
+            int tomove = xs[p];
+            for (int i = p; i < xs.Length -1; i++)
+            {
+                xs[i] = xs[i + 1];
+            }
+            xs[xs.Length - 1] = tomove;
+
+
         }
 
         //7 Write a method that deletes any items in a List<int> that are smaller 
@@ -161,12 +235,30 @@ namespace Programmeren2Opdrachten
 
         public static void Exercise7a(List<int> xs)
         {
-            throw new NotImplementedException();   
+            for (int i = (xs.Count-1); i > 0; i--)
+            {
+                if (xs[i] < xs[i-1])
+                {
+                    xs.RemoveAt(i);
+                }
+            }
         }
         
         public static void Exercise7b(List<int> xs)
         {
-            throw new NotImplementedException();   
+            int pred = 0;
+            for (int i = 0; i < xs.Count; i++)
+            {
+                if (xs[i] < pred)
+                {
+                    pred = xs[i];
+                    xs.RemoveAt(i);
+                    i = i - 1;
+                }
+                else pred = xs[i];
+            }
+
+
         }
 
         //Voor tekst en uitleg zie blackboard, opdracht aftelversje
@@ -181,7 +273,37 @@ namespace Programmeren2Opdrachten
 
         public static int AftelVersje(int aantalLettergrepen, int aantalKinderen)
         {
-            throw new NotImplementedException();
+            int count = 0;
+            int aantal = aantalKinderen;
+            bool[] spelers = new bool[aantalKinderen];
+            for (int i = 0; i < aantalKinderen; i++) spelers[i] = true;
+
+            while (aantal > 1)
+            {
+                for (int i = 1; i <= aantalLettergrepen; i++)
+                {
+                    if (count > aantalKinderen - 1) count = 0;
+                    if (spelers[count])
+                    {
+                        if (i == aantalLettergrepen)
+                        {
+                            spelers[count] = false;
+                            aantal--;
+                        }
+                    }
+                    else i = i - 1;
+                    count ++;
+
+                }
+            }
+
+            for (int i = 0; i < aantalKinderen; i ++)
+            {
+                if (spelers[i]) return i + 1 ;
+            }
+            return 0;
+
+
         }
     }
 }
