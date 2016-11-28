@@ -26,7 +26,24 @@ namespace Programmeren2Opdrachten
 
         public static int[] Exercise19A(int[] xs, int[] ys)
         {
-            throw new NotImplementedException();
+            List<int> lijst = new List<int>(); 
+            
+            foreach (int num in xs)
+            {
+                for(int i = 0; i < ys.Length; i++)
+                {
+                    if (num == ys[i])
+                    {
+                        lijst.Add(num);
+                    }
+                }
+            }
+
+            int[] resArray = new int[lijst.Count];
+            for (int i = 0; i < lijst.Count; i++) resArray[i] = lijst[i]; //array gelijk stellen aan lijst.
+            return resArray;
+
+
         }
 
         //b Return only those items that are present in the first array, but not in the second.
